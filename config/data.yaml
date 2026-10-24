@@ -1,0 +1,25 @@
+
+cameras:
+  width: 224
+  height: 224
+
+recording:
+  obs_mode: rgb
+  num_episodes: 100
+  num_envs: 16
+  sim_backend: gpu # gpu | cpu
+  max_attempts: 1000
+
+export:
+  enabled: true
+  format: hdf5 # hdf5 | zarr | oopsie
+  hz: 20
+  actions: [ee_pose, joint_position]
+  cameras: [base_camera, wrist_camera]
+
+real_export:
+  enabled: true
+  format: oopsie
+  hz: 10
+  actions: [ee_target]
+  cameras: [base_camera, wrist_camera]

@@ -1,0 +1,141 @@
+episode:
+  max_episode_steps: 2400
+cameras:
+  resolution:
+    width: 640
+    height: 480
+  base_camera:
+    eye: [0.6181, 0.3027, 0.5415]
+    target: [-0.0067, 0.5337, 0.2648]
+    fov_degrees: 73.96
+    near: 0.01
+    far: 10.0
+  wrist_camera:
+    position:
+    - 0.0616
+    - -0.0008
+    - 0.0
+    quaternion:
+    - 0.70710678
+    - 0.0
+    - -0.70710678
+    - 0.0
+    fov_degrees: 70.0
+    near: 0.01
+    far: 3.0
+objects:
+  module: drawer
+  board_center_xy: [0.008, 0.536]
+  board_position_offset_xy:
+  - [-0.02, 0.02]
+  - [-0.02, 0.02]
+  board_yaw_range_degrees: [-5.0, 5.0]
+  module_cell_positions_xy:
+  - [0.0, 0.0]
+  - [0.0, 0.086603]
+  - [0.075, 0.043301]
+  - [0.075, -0.043301]
+  - [0.0, -0.086603]
+  - [-0.075, -0.043301]
+  - [-0.075, 0.043301]
+  module_yaw_choices_degrees: [0.0, 60.0, 120.0, 180.0, 240.0, 300.0]
+  board_color: [1.0, 1.0, 1.0]
+  board_surface_height: 0.005
+  hollow_cells: true
+  support_color: [1.0, 0.78, 0.0]
+  part_color: [0.0, 0.1294118, 0.8745098]
+randomization:
+  robot_init_qpos_noise: 0.0
+  real_start_qpos: true
+  min_radius: 0.3
+  max_radius: 0.7
+  x_range: [-0.45, 0.45]
+  y_range: [0.175, 0.775]
+  part_board_distance: [0.15, 0.20]
+success:
+  linear_velocity: 0.02
+  part_angular_velocity: 0.5
+  contact_force: 0.2
+  hold_steps: 10
+  aligned_height: 0.030
+  aligned_offset: 0.002
+  aligned_degrees: 5.0
+  seated_distance: 0.002
+  seated_degrees: 5.0
+demo:
+  max_speed: 0.12
+  contact_speed: 0.04
+  max_angular_speed: 0.6
+  approach_height: 0.08
+  settle_steps: 4
+  handle: [0.0428, 0.001, 0.0095]
+  pick_open_width: 0.02
+  pin_axis: [0.019627, 0.0, 0.005229]
+  guide_path:
+  - [-0.01203, 0.0, 0.045, 22.0]
+  - [-0.01203, 0.0, 0.0254, 22.0]
+  - [-0.0075, 0.0, 0.0254, 22.0]
+  - [0.0, 0.0, 0.0254, 0.0]
+  - [0.0, 0.0, 0.0, 0.0]
+  guide_step: 0.001
+  guide_step_degrees: 1.5
+  guide_speed: 0.02
+  aim_passes: 3
+distractors:
+  clearance: 0.04
+  cubes: {enabled: false, count: 0, half_size: 0.02, colors: [green]}
+  ood_objects: {enabled: false, count: 0, shapes: [bar], colors: [white]}
+  wrong_zones: {enabled: false, count: 0, half_size: 0.05, colors: [green]}
+prompt:
+  randomize: false
+  templates:
+  - put the blue drawer into the yellow housing
+assembly:
+  asset_dir: drawer
+  urdf_to_module: {xyz: [0.0, 0.0, 0.0], rpy: [0.0, -1.5707963, 0.0]}
+  contact_friction: 1.0
+  support:
+    mesh_scale: 0.001
+    visuals:
+    - {file: tn__Base1_gA_Corpo1_Mesh.obj, rpy: [0.0, 1.5707963, 0.0]}
+    - {file: left_Guide_Cube.obj, xyz: [0.013983, -0.03699, -0.011011]}
+    - {file: left_Guide_Cube_01.obj, xyz: [0.024419, -0.03699, 0.007061]}
+    - {file: left_Guide_Cube_02.obj, xyz: [0.019104, -0.03699, -0.023485]}
+    - {file: left_Guide_Cube_03.obj, xyz: [0.03553, -0.03699, -0.016197]}
+    - {file: left_Guide_Cube_04.obj, xyz: [0.001747, -0.03699, -0.019452]}
+    - {file: Cylinder.obj, xyz: [0.025516, -0.037173, -0.014515], rpy: [1.5707964, 0.0, 0.0]}
+    - {file: right_Guide_Cube.obj, xyz: [0.013983, 0.036913, -0.011011]}
+    - {file: right_Guide_Cube_01.obj, xyz: [0.024419, 0.036913, 0.007061]}
+    - {file: right_Guide_Cube_02.obj, xyz: [0.019104, 0.036913, -0.023485]}
+    - {file: right_Guide_Cube_03.obj, xyz: [0.03553, 0.036913, -0.016197]}
+    - {file: right_Guide_Cube_04.obj, xyz: [0.001747, 0.036913, -0.019452]}
+    - {file: right_Guide_Cylinder_01.obj, xyz: [0.025516, 0.03711, -0.014515], rpy: [1.5707964, 0.0, 0.0]}
+    collisions:
+    - {file: simple_colliders_Cube.obj, xyz: [0.019, 0.0, 0.022396], rpy: [0.0, 1.5707964, 0.0]}
+    - {file: simple_colliders_Cube_01.obj, xyz: [0.019, 0.0, -0.022839], rpy: [0.0, 1.5707964, 0.0]}
+    - {file: simple_colliders_Cube_02.obj, xyz: [0.000639, 0.0, 0.0], rpy: [3.1415927, 0.0, 3.1415927]}
+    - {file: left_Guide_Cube.obj, xyz: [0.013983, -0.03699, -0.011011]}
+    - {file: left_Guide_Cube_01.obj, xyz: [0.024419, -0.03699, 0.007061]}
+    - {file: left_Guide_Cube_02.obj, xyz: [0.019104, -0.03699, -0.023485]}
+    - {file: left_Guide_Cube_03.obj, xyz: [0.03553, -0.03699, -0.016197]}
+    - {file: left_Guide_Cube_04.obj, xyz: [0.001747, -0.03699, -0.019452]}
+    - {file: Cylinder.obj, xyz: [0.025516, -0.037173, -0.014515], rpy: [1.5707964, 0.0, 0.0]}
+    - {file: right_Guide_Cube.obj, xyz: [0.013983, 0.036913, -0.011011]}
+    - {file: right_Guide_Cube_01.obj, xyz: [0.024419, 0.036913, 0.007061]}
+    - {file: right_Guide_Cube_02.obj, xyz: [0.019104, 0.036913, -0.023485]}
+    - {file: right_Guide_Cube_03.obj, xyz: [0.03553, 0.036913, -0.016197]}
+    - {file: right_Guide_Cube_04.obj, xyz: [0.001747, 0.036913, -0.019452]}
+    - {file: right_Guide_Cylinder_01.obj, xyz: [0.025516, 0.03711, -0.014515], rpy: [1.5707964, 0.0, 0.0]}
+    - {box: [0.0016, 0.068, 0.038], xyz: [0.00195, 0.0, -0.0025]}
+  part:
+    mass: 0.05
+    mesh_scale: 0.001
+    visuals:
+    - {file: tn__Gaveta1_aE_Corpo1_Mesh.obj, xyz: [0.0027, -0.035, -0.022]}
+    - {file: tn__Gaveta1_aE_Corpo1_Cylinder_01.obj, xyz: [0.005229, -0.036636, -0.019627], rpy: [1.5707964, 0.0, 0.0]}
+    - {file: Cylinder_02.obj, xyz: [0.005229, 0.036635, -0.019627], rpy: [1.5707964, 0.0, 0.0]}
+    collisions:
+    - {box: [0.0353, 0.070, 0.039], xyz: [0.02035, 0.0, -0.0025]}
+    - {box: [0.0097, 0.030, 0.005], xyz: [0.04285, 0.001, 0.0095]}
+    - {file: tn__Gaveta1_aE_Corpo1_Cylinder_01.obj, xyz: [0.005229, -0.036036, -0.019627], rpy: [1.5707964, 0.0, 0.0]}
+    - {file: Cylinder_02.obj, xyz: [0.005229, 0.036035, -0.019627], rpy: [1.5707964, 0.0, 0.0]}

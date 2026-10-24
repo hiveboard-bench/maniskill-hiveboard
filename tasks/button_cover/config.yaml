@@ -1,0 +1,157 @@
+episode:
+  max_episode_steps: 1200
+cameras:
+  resolution:
+    width: 640
+    height: 480
+  base_camera:
+    eye: [0.6181, 0.3027, 0.5415]
+    target: [-0.0067, 0.5337, 0.2648]
+    fov_degrees: 73.96
+    near: 0.01
+    far: 10.0
+  wrist_camera:
+    position:
+    - 0.0616
+    - -0.0008
+    - 0.0
+    quaternion:
+    - 0.70710678
+    - 0.0
+    - -0.70710678
+    - 0.0
+    fov_degrees: 70.0
+    near: 0.01
+    far: 3.0
+objects:
+  module: button_cover
+  board_center_xy:
+  - 0.0
+  - 0.475
+  board_position_offset_xy:
+  - [-0.10, 0.10]
+  - [-0.10, 0.10]
+  board_yaw_range_degrees: [-30.0, 30.0]
+  module_cell_positions_xy:
+  - - 0.0
+    - 0.0
+  - - 0.0
+    - 0.086603
+  - - 0.075
+    - 0.043301
+  - - 0.075
+    - -0.043301
+  - - 0.0
+    - -0.086603
+  - - -0.075
+    - -0.043301
+  - - -0.075
+    - 0.043301
+  module_yaw_choices_degrees: [-30.0, 30.0, 90.0, 150.0, 210.0, 270.0]
+  board_color:
+  - 1.0
+  - 1.0
+  - 1.0
+  board_surface_height: 0.005
+  hollow_cells: true
+  module_yaw_offset_degrees: 30.0
+  body_color: [1.0, 0.78, 0.0]
+  button_color: [0.0, 0.1294118, 0.8745098]
+  cover_color: [0.0, 0.1294118, 0.8745098]
+  parts:
+    button:
+      z: 0.021
+      discs: [[0.0125, 0.0, 0.010], [0.0225, 0.010, 0.0125], [0.0205, 0.0125, 0.015]]
+      mass: 0.0377
+    lid:
+      yaw_degrees: 180.0
+      hinge_y: -0.0305
+      hinge_z: 0.0176
+      plate_y: 0.0296
+      plate_z: 0.0165
+      half_x: 0.028
+      half_y: 0.032
+      half_z: 0.004
+      mass: 0.0824
+randomization:
+  robot_init_qpos_noise: 0.0
+  real_start_qpos: true
+  min_radius: 0.3
+  max_radius: 0.7
+  x_range:
+  - -0.45
+  - 0.45
+  y_range:
+  - 0.175
+  - 0.775
+success:
+  open_angle_degrees: 70.0
+  press_fraction: 0.8
+  joint_velocity: 0.1
+  contact_force: 0.2
+  hold_steps: 10
+demo:
+  max_speed: 0.12
+  contact_speed: 0.05
+  max_angular_speed: 0.6
+  approach_height: 0.09
+  lid_open: grip
+  lid_grip_width: 0.003
+  press_steps: 40
+  press_tcp_height: 0.045
+  press_depth_travel: 0.040
+  hold_press_steps: 25
+  lid_open_degrees: 92.0
+  lid_detent_trigger_degrees: 73.0
+  lid_arc_steps: 12
+  lid_push_past: 0.045
+  lid_push_lift: 0.055
+distractors:
+  clearance: 0.04
+  cubes:
+    enabled: false
+    count: 0
+    half_size: 0.02
+    colors:
+    - green
+  ood_objects:
+    enabled: false
+    count: 0
+    shapes:
+    - bar
+    colors:
+    - white
+  wrong_zones:
+    enabled: false
+    count: 0
+    half_size: 0.05
+    colors:
+    - green
+prompt:
+  randomize: false
+  templates:
+  - open the blue cover and press the blue button
+button_cover:
+  urdf:
+    urdf_to_module: {xyz: [0.0, 0.0, 0.021], rpy: [0.0, -1.5707963, 0.0]}
+    body_visual: {xyz: [-0.0209518, 0.0, 0.0], rpy: [0.0, 1.5707964, 0.0]}
+    button_visual: {xyz: [0.0, 0.0, 0.0], rpy: [0.0, 1.5707964, 0.0]}
+    lid_joint_xyz: [-0.0034325, 0.0304632, 0.0]
+    lid_visual: {xyz: [0.0055156, 0.0175212, -0.0249821], rpy: [-1.5707964, -1.5707964, 0.0]}
+    lid_closed_angle: -1.5707963
+    lid_open_limit: 0.6981317
+    lid_wall_stop_degrees: 110.0
+    lid_center_of_mass: [0.0305, 0.0122, 0.0]
+    lid_inertia: [3.526e-05, 6.302e-05, 3.646e-05]
+  press_depth: -0.005
+  button_friction: 0.01
+  button_damping: 2.0
+  open_angle_limit: 1.9199
+  lid_friction: 0.001
+  lid_damping: 0.005
+  contact_friction: 1.6
+  button_stiffness: 800.0
+  detent_engage_degrees: 80.0
+  detent_stiffness: 100.0
+  detent_damping: 10.0
+  detent_force_limit: 100.0

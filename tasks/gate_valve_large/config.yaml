@@ -1,0 +1,149 @@
+episode:
+  max_episode_steps: 2400
+cameras:
+  resolution:
+    width: 640
+    height: 480
+  base_camera:
+    eye: [0.6181, 0.3027, 0.5415]
+    target: [-0.0067, 0.5337, 0.2648]
+    fov_degrees: 73.96
+    near: 0.01
+    far: 10.0
+  wrist_camera:
+    position:
+    - 0.0616
+    - -0.0008
+    - 0.0
+    quaternion:
+    - 0.70710678
+    - 0.0
+    - -0.70710678
+    - 0.0
+    fov_degrees: 70.0
+    near: 0.01
+    far: 3.0
+objects:
+  module: gate_valve_large
+  board_center_xy:
+  - 0.0
+  - 0.475
+  board_position_offset_xy:
+  - [-0.10, 0.10]
+  - [-0.10, 0.10]
+  board_yaw_range_degrees: [-30.0, 30.0]
+  module_cell_positions_xy:
+  - - 0.0
+    - 0.0
+  - - 0.0
+    - 0.086603
+  - - 0.075
+    - 0.043301
+  - - 0.075
+    - -0.043301
+  - - 0.0
+    - -0.086603
+  - - -0.075
+    - -0.043301
+  - - -0.075
+    - 0.043301
+  module_yaw_choices_degrees: [-30.0, 30.0, 90.0, 150.0, 210.0, 270.0]
+  board_color:
+  - 1.0
+  - 1.0
+  - 1.0
+  valve_base_color:
+  - 1.0
+  - 0.78
+  - 0.0
+  board_surface_height: 0.005
+  hollow_cells: true
+  wheel_color:
+  - 0.0
+  - 0.1294118
+  - 0.8745098
+  wheel:
+    collision: coacd
+    rim_radius: 0.0555
+    rim_z_range:
+    - 0.1392
+    - 0.1532
+    mass: 0.25
+  mesh:
+    base_file: high-valve_Corpo1__2_.obj
+    base_offset_z: 0.0
+    wheel_file: high-valve_Corpo1__1_.obj
+    wheel_offset_xyz:
+    - 0.0
+    - 0.0
+    - -0.0157571
+    wheel_offset_quat:
+    - 1.0
+    - 0.0
+    - 0.0
+    - 0.0
+    pivot_height: 0.0
+  module_yaw_offset_degrees: 30.0
+randomization:
+  robot_init_qpos_noise: 0.0
+  real_start_qpos: true
+  min_radius: 0.3
+  max_radius: 0.7
+  x_range:
+  - -0.45
+  - 0.45
+  y_range:
+  - 0.175
+  - 0.775
+success:
+  angle_tolerance_degrees: 10.0
+  angular_velocity: 0.15
+  contact_force: 0.2
+  unwind_tolerance: 0.5
+  hold_steps: 10
+demo:
+  max_speed: 0.12
+  contact_speed: 0.08
+  max_angular_speed: 0.6
+  approach_height: 0.07
+  turn_per_grasp_degrees: 140.0
+  grasp_settle_steps: 4
+  grasp: bolt
+  grasp_tcp_height: 0.0185
+  grasp_width: 0.0
+  max_segments: 12
+  grasp_yaw_offset_degrees: 0.0
+  arc_step_degrees: 20.0
+distractors:
+  clearance: 0.04
+  cubes:
+    enabled: false
+    count: 0
+    half_size: 0.02
+    colors:
+    - green
+  ood_objects:
+    enabled: false
+    count: 0
+    shapes:
+    - bar
+    colors:
+    - white
+  wrong_zones:
+    enabled: false
+    count: 0
+    half_size: 0.05
+    colors:
+    - green
+prompt:
+  randomize: false
+  templates:
+  - turn the large gate valve handwheel one full revolution
+gate_valve:
+  initial_angle: 0.0
+  target_angle: 6.2832
+  lower_limit: 0.0
+  upper_limit: 6.4
+  damping: 0.02
+  friction: 0.05
+  contact_friction: 1.6

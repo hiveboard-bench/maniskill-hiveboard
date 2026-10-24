@@ -1,0 +1,23 @@
+[project]
+name = "maniskill-fr3-table"
+version = "0.1.0"
+description = "A minimal ManiSkill environment with a Franka Research 3 at a table"
+requires-python = ">=3.11,<3.13"
+dependencies = [
+    "diffusers>=0.40.0",
+    "h5py>=3.16.0",
+    "imageio>=2.37.4",
+    "mani-skill==3.0.1",
+    "msgpack>=1.2.2",
+    "opencv-python>=5.0.0.93",
+    "pyyaml>=6.0",
+    "scipy>=1.15.3",
+    "torchvision>=0.29.0",
+    "transformers>=5.17.0",
+    "wandb>=0.30.0",
+    "websockets>=17.1",
+    "zarr>=3.0",
+]
+
+[tool.uv]
+package = false

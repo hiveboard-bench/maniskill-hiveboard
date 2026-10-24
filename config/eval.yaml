@@ -1,0 +1,26 @@
+output_dir: outputs/eval
+
+episodes: 50
+seed_offset: 100000
+max_steps: null
+num_envs: 25
+
+runs:
+  - name: dp_scratch
+    enabled: true
+    policy: diffusion_policy
+    seeds:
+      - checkpoint: outputs/baselines/diffusion_policy/<seed 42 run>/best.ckpt
+    tasks: [circuit_breaker]
+
+  - name: pi05_lora
+    enabled: false
+    policy: pi05
+    host: localhost
+    seeds:
+      - {port: 8000}
+      - {port: 8001}
+      - {port: 8002}
+    action_steps: 10
+    hz: 20
+    tasks: [circuit_breaker]

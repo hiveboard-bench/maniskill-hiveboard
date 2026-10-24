@@ -1,0 +1,66 @@
+
+task: circuit_breaker
+encoder: scratch
+
+dataset:
+  record_dir: demos
+  hz: 20
+  cameras: [base_camera, wrist_camera]
+  num_episodes: null
+  val_episodes: 5
+
+encoders:
+  scratch:
+    input_size: 128
+    batch_size: 64
+    encoder_lr: 1.0e-4
+  imagenet:
+    input_size: 128
+    batch_size: 64
+    encoder_lr: 1.0e-5
+  clip:
+    model: openai/clip-vit-base-patch16
+    input_size: 224
+    batch_size: 16
+    encoder_lr: 1.0e-5
+
+policy:
+  horizon: 16
+  n_obs_steps: 2
+  n_action_steps: 8
+  crop_ratio: 0.9
+  down_dims: [256, 512, 1024]
+  diffusion_step_embed_dim: 128
+  kernel_size: 5
+  n_groups: 8
+  num_train_timesteps: 100
+  num_inference_steps: 16
+
+training:
+  epochs: 300
+  lr: 1.0e-4
+  weight_decay: 1.0e-6
+  warmup_steps: 500
+  ema_power: 0.75
+  num_workers: 8
+  checkpoint_every: 50
+  seed: 42
+  max_steps_per_epoch: null
+  resume: null
+
+evaluation:
+  every: 20
+  episodes: 20
+  seed_offset: 100000
+  video_episodes: 2
+  num_envs: 20
+  sim_backend: gpu
+  domain_randomization: false
+  max_steps: null
+
+wandb:
+  project: manip_fail
+  entity: loco_manip
+  mode: online
+
+output_dir: outputs/baselines/diffusion_policy

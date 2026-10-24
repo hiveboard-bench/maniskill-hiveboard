@@ -1,0 +1,116 @@
+episode:
+  max_episode_steps: 2400
+cameras:
+  resolution:
+    width: 640
+    height: 480
+  base_camera:
+    eye: [0.6181, 0.3027, 0.5415]
+    target: [-0.0067, 0.5337, 0.2648]
+    fov_degrees: 73.96
+    near: 0.01
+    far: 10.0
+  wrist_camera:
+    position:
+    - 0.0616
+    - -0.0008
+    - 0.0
+    quaternion:
+    - 0.70710678
+    - 0.0
+    - -0.70710678
+    - 0.0
+    fov_degrees: 70.0
+    near: 0.01
+    far: 3.0
+objects:
+  module: peg_insertion
+  board_center_xy: [0.008, 0.536]
+  board_position_offset_xy:
+  - [-0.02, 0.02]
+  - [-0.02, 0.02]
+  board_yaw_range_degrees: [-5.0, 5.0]
+  module_cell_positions_xy:
+  - [0.0, 0.0]
+  - [0.0, 0.086603]
+  - [0.075, 0.043301]
+  - [0.075, -0.043301]
+  - [0.0, -0.086603]
+  - [-0.075, -0.043301]
+  - [-0.075, 0.043301]
+  module_yaw_choices_degrees: [0.0, 60.0, 120.0, 180.0, 240.0, 300.0]
+  board_color: [1.0, 1.0, 1.0]
+  board_surface_height: 0.005
+  hollow_cells: true
+  support_color: [1.0, 0.78, 0.0]
+  part_color: [0.0, 0.1294118, 0.8745098]
+randomization:
+  robot_init_qpos_noise: 0.0
+  real_start_qpos: true
+  min_radius: 0.3
+  max_radius: 0.7
+  x_range: [-0.45, 0.45]
+  y_range: [0.175, 0.775]
+  part_board_distance: [0.15, 0.20]
+success:
+  linear_velocity: 0.02
+  part_angular_velocity: 0.5
+  contact_force: 0.2
+  hold_steps: 10
+demo:
+  max_speed: 0.12
+  contact_speed: 0.04
+  max_angular_speed: 0.6
+  approach_height: 0.08
+  pick_open_width: 0.012
+  grasp_height: 0.031
+  carry_clearance: 0.03
+  hover: 0.004
+  turn_per_grasp_degrees: 330.0
+  spin_speed: 2.3
+  spin_acceleration: 15.0
+  settle_steps: 4
+  regrasp_open_width: 0.006
+  regrasp_lift: 0.0
+thread:
+  pitch: 0.00125
+  travel: 0.015
+  engage_radius: 0.002
+  engage_tilt_degrees: 10.0
+  engage_height: 0.002
+  seat_tolerance: 0.0005
+  flat_normal_degrees: 0.0
+  grip_symmetry_degrees: 10.0
+  spin_friction: 0.001
+  spin_damping: 0.0005
+  spin_armature: 0.0001
+  lift_stiffness: 20000.0
+  lift_damping: 400.0
+  lift_force_limit: 300.0
+  park_depth: -0.3
+distractors:
+  clearance: 0.04
+  cubes: {enabled: false, count: 0, half_size: 0.02, colors: [green]}
+  ood_objects: {enabled: false, count: 0, shapes: [bar], colors: [white]}
+  wrong_zones: {enabled: false, count: 0, half_size: 0.05, colors: [green]}
+prompt:
+  randomize: false
+  templates:
+  - thread the blue peg into the yellow socket
+assembly:
+  asset_dir: peg_insertion
+  urdf_to_module: {xyz: [0.0, 0.0, 0.0], rpy: [0.0, -1.5707963, 0.0]}
+  contact_friction: 1.0
+  support:
+    visuals:
+    - {file: Base_principal_Corpo1.obj, rpy: [0.0, 1.5707963, 0.0]}
+    collisions:
+    - {box: [0.015, 0.076, 0.076], xyz: [0.0075, 0.0, 0.0]}
+  part:
+    link: {rpy: [0.0, 1.5707963, 0.0]}
+    mass: 0.02
+    visuals:
+    - {file: Al__a_Corpo1.obj}
+    collisions:
+    - {file: peg_thread_hull.obj}
+    - {file: peg_shaft_hull.obj}

@@ -1,0 +1,306 @@
+domain_randomization: false
+simulation:
+  env_id: FR3Table-v1
+  max_episode_steps: 200
+  obs_mode: rgb
+  control_mode: pd_joint_pos
+  sim_backend: cpu
+  num_envs: 1
+  seed: 0
+  steps: 0
+robot:
+  asset_path: fr3_assets/fr3.xml
+  base_position:
+  - 0.0
+  - 0.0
+  - 0.0
+  base_yaw_degrees: 90.0
+  rest_qpos:
+  - 0.0
+  - -0.7853981634
+  - 0.0
+  - -2.3561944902
+  - 0.0
+  - 1.5707963268
+  - 0.7853981634
+  - 0.04
+  - 0.04
+  arm_stiffness: 600
+  arm_damping: 60
+  arm_force_limits:
+  - 87
+  - 87
+  - 87
+  - 87
+  - 12
+  - 12
+  - 12
+  joint_limits:
+  - [-2.7437, 2.7437]
+  - [-1.7837, 1.7837]
+  - [-2.9007, 2.9007]
+  - [-3.0421, -0.1518]
+  - [-2.8065, 2.8065]
+  - [0.5445, 4.5169]
+  - [-3.0159, 3.0159]
+  arm_delta_radians: 0.1
+  kinematics_path: fr3_assets/fr3_kinematics.urdf
+  tcp_link: fr3_hand_tcp
+  ee_delta_meters: 0.1
+  ee_delta_radians: 0.1
+  gripper_lower: 0.0
+  gripper_upper: 0.04
+  gripper_stiffness: 1000
+  gripper_damping: 100
+  gripper_force_limit: 20
+  finger_friction: 1.0
+  gripper_max_speed: 0.0575
+  gripper_delay_seconds: 0.3
+  ee_deadband_meters: 0.009
+  ee_deadband_degrees: 8.0
+  ee_lag_seconds: 0.2
+  ee_rotation_lag_seconds: 0.3
+  ee_max_speed: 0.15
+  ee_max_angular_speed_degrees: 23.0
+  ee_target_stiffness: 100
+  ee_target_damping: 10
+  ee_error_clip_meters: 0.02
+  ee_error_clip_radians: 0.1
+  reflex:
+    joint_limit_margin: 0.005
+    joint_velocity_limits: [2.62, 2.62, 2.62, 2.62, 5.26, 4.18, 5.26]
+    max_joint_acceleration: 30.0
+    max_tcp_speed: 0.3
+    max_tcp_angular_speed_degrees: 143.0
+    torque_saturation_steps: 2
+robot_power_light:
+  led_color: [0.08, 1.0, 0.12, 1.0]
+  glow_color: [0.02, 0.38, 0.03]
+  local_led_positions:
+  - [0.005, -0.071, 0.047]
+  - [0.013, 0.070, 0.047]
+  led_half_size: [0.006, 0.003, 0.036]
+  local_glow_positions:
+  - [0.005, -0.090, 0.080]
+  - [0.013, 0.088, 0.080]
+  local_glow_targets:
+  - [0.005, -0.12, 0.0]
+  - [0.013, 0.12, 0.0]
+  glow_intensity_range: [0.4, 1.6]
+latency:
+  camera_seconds:
+    base_camera: 0.04
+    front_camera: 0.04
+    wrist_camera: 0.01
+    gripper_camera: 0.01
+  inference_seconds: 0.0
+cameras:
+  randomization:
+    front_translation_m: [0.04, 0.04, 0.025]
+    front_rotation_degrees: [2.5, 2.5, 1.0]
+    wrist_offset_m: [[-0.004, 0.015], [-0.01, 0.01], [-0.025, 0.02]]
+    wrist_rotation_degrees: [5.0, 5.0, 5.0]
+  front:
+    width: 640
+    height: 480
+    fov_degrees: 70.0
+    near: 0.01
+    far: 10.0
+    eye:
+    - 0.55
+    - -0.10
+    - 0.55
+    target:
+    - 0.20
+    - 0.42
+    - 0.25
+  gripper:
+    width: 640
+    height: 480
+    fov_degrees: 42.5
+    near: 0.01
+    far: 3.0
+    position:
+    - -0.02476600
+    - -0.06470576
+    - 0.05831188
+    quaternion:
+    - 0.00952105
+    - -0.70282332
+    - 0.00940839
+    - -0.71123851
+tables:
+  top_color:
+  - 0.01
+  - 0.01
+  - 0.01
+  - 1.0
+  frame_color:
+  - 0.2
+  - 0.21
+  - 0.23
+  - 1.0
+  main:
+    position:
+    - 0.0
+    - -0.325
+    - 0.0
+    top_half_size:
+    - 0.75
+    - 0.45
+    - 0.02
+    leg_half_size:
+    - 0.03
+    - 0.03
+    - 0.355
+    leg_xy:
+    - - 0.71
+      - 0.41
+    - - 0.71
+      - -0.41
+    - - -0.71
+      - 0.41
+    - - -0.71
+      - -0.41
+    leg_z: -0.395
+  front:
+    position:
+    - 0.0
+    - 0.475
+    - 0.03
+    top_half_size:
+    - 0.5
+    - 0.35
+    - 0.02
+    leg_half_size:
+    - 0.03
+    - 0.03
+    - 0.37
+    leg_xy:
+    - - 0.46
+      - 0.31
+    - - 0.46
+      - -0.31
+    - - -0.46
+      - 0.31
+    - - -0.46
+      - -0.31
+    leg_z: -0.39
+ground:
+  width: 20
+  altitude: -0.75
+  color: [0.38, 0.39, 0.40, 1.0]
+back_wall:
+  concrete_part_count: 5
+  parts:
+  - position: [-0.96, 0.575, 0.55]
+    half_size: [0.18, 0.325, 1.30]
+    color: [0.43, 0.40, 0.35, 1.0]
+  - position: [-0.776, 0.64, 0.52]
+    half_size: [0.004, 0.006, 1.26]
+    color: [0.31, 0.29, 0.26, 1.0]
+  - position: [-0.776, 0.445, 0.40]
+    half_size: [0.004, 0.195, 0.003]
+    color: [0.34, 0.32, 0.29, 1.0]
+  - position: [-0.96, 0.246, 0.40]
+    half_size: [0.18, 0.004, 0.003]
+    color: [0.34, 0.32, 0.29, 1.0]
+  - position: [-1.144, 0.445, 0.40]
+    half_size: [0.004, 0.195, 0.003]
+    color: [0.34, 0.32, 0.29, 1.0]
+  - position: [0.07, 0.89, 1.05]
+    half_size: [0.88, 0.025, 0.80]
+    color: [0.81, 0.80, 0.76, 1.0]
+  - position: [0.07, 0.85, -0.25]
+    half_size: [0.88, 0.025, 0.50]
+    color: [0.85, 0.84, 0.81, 1.0]
+  - position: [0.07, 0.87, 0.25]
+    half_size: [0.88, 0.02, 0.015]
+    color: [0.77, 0.76, 0.73, 1.0]
+  - position: [0.35, 0.819, -0.25]
+    half_size: [0.006, 0.004, 0.50]
+    color: [0.76, 0.75, 0.72, 1.0]
+  - position: [0.35, 0.859, 1.05]
+    half_size: [0.006, 0.004, 0.80]
+    color: [0.76, 0.75, 0.72, 1.0]
+  - position: [-8.0, -0.8, 2.25]
+    half_size: [0.025, 4.5, 3.0]
+    color: [0.81, 0.80, 0.76, 1.0]
+  - position: [-7.965, -0.8, -0.70]
+    half_size: [0.01, 4.5, 0.05]
+    color: [0.38, 0.39, 0.40, 1.0]
+showcase_video:
+  size: 720
+  cell: 360
+  fov_degrees: 48.0
+  shader_pack: default
+  target: [-0.05, 0.30, 0.20]
+  radius: 1.085
+  height: 0.60
+  azimuth_degrees: 15.0
+  sweep_degrees: 20.0
+  sweep_seconds: 40.0
+  stuck_seconds: 10.0
+  stuck_meters: 0.01
+camera_markers:
+  radius: 0.025
+  half_thickness: 0.003
+  color:
+  - 1.0
+  - 0.85
+  - 0.0
+  - 1.0
+camera_gui:
+  enabled: false
+  front_x:
+  - -2.5
+  - 2.5
+  front_y:
+  - -2.0
+  - 2.0
+  front_z:
+  - 0.1
+  - 2.5
+  gripper_x:
+  - -0.2
+  - 0.2
+  gripper_y:
+  - -0.2
+  - 0.2
+  gripper_z:
+  - 0.0
+  - 0.3
+joint_gui:
+  enabled: false
+  slider_steps: 1000
+render:
+  shadows: true
+  shadow_map_size: 1024
+  shadow_variation:
+    ambient_range: [0.18, 0.31]
+    key_intensity_range: [2.0, 3.4]
+    fill_intensity: 0.35
+    light_x_range: [-0.40, 0.40]
+    light_y_range: [-0.30, 0.25]
+    light_height_range: [2.10, 2.45]
+  texture_variation:
+    variants: 8
+    resolution: 128
+    white_wall: 0.03
+    concrete: 0.08
+  color_variation:
+    white_wall: 0.025
+    concrete: 0.030
+    table_top: 0.008
+    table_frame: 0.020
+  image_variation:
+    enabled: true
+    gain_range: [0.8, 1.2]
+    white_balance: 0.06
+    gamma_range: [0.9, 1.1]
+    blur_sigma_range: [0.0, 1.0]
+    distortion_k1_range: [-0.06, 0.0]
+    noise_std: 3.0
+    wrist_motion_blur_seconds: 0.006
+    motion_blur_depth_meters: 0.3
+  camera_output: outputs/cameras.png

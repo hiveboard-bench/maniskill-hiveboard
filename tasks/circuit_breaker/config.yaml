@@ -1,0 +1,115 @@
+episode:
+  max_episode_steps: 1200
+cameras:
+  resolution:
+    width: 640
+    height: 480
+  base_camera:
+    eye: [0.6181, 0.3027, 0.5415]
+    target: [-0.0067, 0.5337, 0.2648]
+    fov_degrees: 73.96
+    near: 0.01
+    far: 10.0
+  wrist_camera:
+    position:
+    - 0.0616
+    - -0.0008
+    - 0.0
+    quaternion:
+    - 0.70710678
+    - 0.0
+    - -0.70710678
+    - 0.0
+    fov_degrees: 70.0
+    near: 0.01
+    far: 3.0
+objects:
+  module: circuit_breaker
+  board_center_xy:
+  - 0.008
+  - 0.536
+  board_position_offset_xy:
+  - [-0.02, 0.02]
+  - [-0.02, 0.02]
+  board_yaw_range_degrees: [-5.0, 5.0]
+  module_cell_positions_xy:
+  - [0.0, 0.0]
+  - [0.0, 0.086603]
+  - [0.075, 0.043301]
+  - [0.075, -0.043301]
+  - [0.0, -0.086603]
+  - [-0.075, -0.043301]
+  - [-0.075, 0.043301]
+  module_height_offset: -0.005
+  module_yaw_choices_degrees: [-90.0, -30.0, 30.0, 90.0, 150.0, 210.0]
+  board_color:
+  - 1.0
+  - 1.0
+  - 1.0
+  breaker_base_color:
+  - 1.0
+  - 0.78
+  - 0.0
+  breaker_toggle_color:
+  - 0.0
+  - 0.1294118
+  - 0.8745098
+breaker:
+  initial_angle: -0.523599
+  target_angle: 0.463599
+  lower_limit: -0.523599
+  upper_limit: 0.523599
+  damping: 0.06
+  friction: 0.01
+randomization:
+  robot_init_qpos_noise: 0.0
+  real_start_qpos: real_start_qpos_breaker.npy
+  min_radius: 0.3
+  max_radius: 0.7
+  x_range:
+  - -0.45
+  - 0.45
+  y_range:
+  - 0.175
+  - 0.775
+success:
+  angle_tolerance_degrees: 5.0
+  angular_velocity: 0.08
+  contact_force: 0.2
+  hold_steps: 20
+demo:
+  max_speed: 0.11
+  contact_speed: 0.06
+  max_angular_speed: 0.5
+  approach_height: 0.1
+  breaker_height: 0.015
+  breaker_start: 0.015
+  breaker_sweep: 0.07
+  breaker_sweep_drop: 0.015
+  breaker_sweep_speed: 0.02
+  breaker_lift_height: 0.15
+distractors:
+  clearance: 0.04
+  cubes:
+    enabled: false
+    count: 0
+    half_size: 0.02
+    colors:
+    - green
+  ood_objects:
+    enabled: false
+    count: 0
+    shapes:
+    - bar
+    colors:
+    - white
+  wrong_zones:
+    enabled: false
+    count: 0
+    half_size: 0.05
+    colors:
+    - green
+prompt:
+  randomize: false
+  templates:
+  - toggle the 3D-printed circuit breaker

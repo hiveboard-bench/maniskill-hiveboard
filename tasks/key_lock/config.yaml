@@ -1,0 +1,158 @@
+episode:
+  max_episode_steps: 3600
+cameras:
+  resolution:
+    width: 640
+    height: 480
+  base_camera:
+    eye: [0.6181, 0.3027, 0.5415]
+    target: [-0.0067, 0.5337, 0.2648]
+    fov_degrees: 73.96
+    near: 0.01
+    far: 10.0
+  wrist_camera:
+    position:
+    - 0.0616
+    - -0.0008
+    - 0.0
+    quaternion:
+    - 0.70710678
+    - 0.0
+    - -0.70710678
+    - 0.0
+    fov_degrees: 70.0
+    near: 0.01
+    far: 3.0
+objects:
+  module: key_lock
+  board_center_xy:
+  - 0.0
+  - 0.475
+  board_position_offset_xy:
+  - [-0.10, 0.10]
+  - [-0.10, 0.10]
+  board_yaw_range_degrees: [-30.0, 30.0]
+  module_cell_positions_xy:
+  - - 0.0
+    - 0.0
+  - - 0.0
+    - 0.086603
+  - - 0.075
+    - 0.043301
+  - - 0.075
+    - -0.043301
+  - - 0.0
+    - -0.086603
+  - - -0.075
+    - -0.043301
+  - - -0.075
+    - 0.043301
+  module_yaw_choices_degrees: [-30.0, 30.0, 90.0, 150.0, 210.0, 270.0]
+  board_color:
+  - 1.0
+  - 1.0
+  - 1.0
+  board_surface_height: 0.005
+  hollow_cells: true
+  module_yaw_offset_degrees: 30.0
+  lock_color: [1.0, 0.78, 0.0]
+  key_color: [0.0, 0.1294118, 0.8745098]
+  parts:
+    mesh_scale: 0.001
+    body:
+      half_x: 0.044
+      half_y: 0.0381
+      height: 0.015
+    key:
+      length: 0.079
+      mesh_offset:
+      - -0.005
+      - 0.0125
+      - 0.0
+      tip_center: [0.0, 0.0, 0.0026]
+      tip_half: [0.0045, 0.012, 0.0026]
+      shaft_radius: 0.0035
+      shaft_center: [0.0, -0.0017, 0.0302]
+      shaft_half_length: 0.025
+      bow_center: [0.0, -0.0005, 0.0671]
+      bow_half: [0.0035, 0.012, 0.0119]
+    keyway:
+      half_x: 0.006
+      half_y: 0.015
+      wall: 0.002
+      depth: 0.012
+    barrel_mass: 0.05
+    plug:
+      center_x: 0.0
+      clearance: 0.022
+randomization:
+  robot_init_qpos_noise: 0.0
+  real_start_qpos: true
+  min_radius: 0.3
+  max_radius: 0.7
+  x_range:
+  - -0.45
+  - 0.45
+  y_range:
+  - 0.175
+  - 0.775
+  min_board_distance: 0.17
+  max_board_distance: 0.22
+  key_yaw_aligned: true
+success:
+  turn_degrees: 80.0
+  insert_radius: 0.015
+  insert_depth: 0.005
+  upright_degrees: 25.0
+  angular_velocity: 0.1
+  linear_velocity: 0.02
+  key_angular_velocity: 0.5
+  contact_force: 0.2
+  release_contact_force: 0.5
+  hold_steps: 10
+demo:
+  max_speed: 0.12
+  contact_speed: 0.04
+  max_angular_speed: 0.6
+  approach_height: 0.09
+  lift_height: 0.06
+  insert_clearance: 0.02
+  turn_degrees: 115.0
+  settle_steps: 8
+  insert_depth: 0.01
+  turn_steps: 10
+  grasp_width: 0.0
+  align_tries: 5
+  align_tolerance: 0.0015
+  grasp_z: 0.075
+  insert_tries: 3
+distractors:
+  clearance: 0.04
+  cubes:
+    enabled: false
+    count: 0
+    half_size: 0.02
+    colors:
+    - green
+  ood_objects:
+    enabled: false
+    count: 0
+    shapes:
+    - bar
+    colors:
+    - white
+  wrong_zones:
+    enabled: false
+    count: 0
+    half_size: 0.05
+    colors:
+    - green
+prompt:
+  randomize: false
+  templates:
+  - put the blue key in the yellow lock and turn it a quarter turn
+key_lock:
+  turn_limit: 1.5708
+  barrel_friction: 0.0
+  barrel_damping: 0.002
+  contact_friction: 1.6
