@@ -477,82 +477,55 @@ def solve_gate_valve(planner, fault=None):
     return planner.idle(until_success=fault is None)
 
 
-# Open the lid and press the button with the robot gripper.
+# Grip the lid by its side walls and swing it open with the hand held top-down, then press with the same hand.
 def solve_button_cover(planner, fault=None):
     env = planner.base
     cfg = env.config["demo"]
     if fault == "never_contacted":
         return planner.idle()
-    root = env.valve.pose.sp
-    lid = env.config["objects"]["parts"]["lid"]
-    lid_root = root * sapien.Pose(q=Rotation.from_euler("z", lid.get("yaw_degrees", 0.0), degrees=True).as_quat()[[3, 0, 1, 2]])
-    local = lambda x, y, z: lid_root * sapien.Pose(p=[x, y, z])
-    front_y = lid["hinge_y"] + lid["plate_y"] + lid["half_y"]
-    plate_z = lid["hinge_z"] + lid["plate_z"]
-    grip = local(0.0, front_y - 0.008, plate_z).p
-    hinge = local(0.0, lid["hinge_y"], lid["hinge_z"]).p
-    axis = rotation(lid_root).apply([1.0, 0.0, 0.0])
+    # Lid link frame: x runs from the hinge to the front edge, y out of the closed top, z along the hinge.
+    lid = env.lid.pose.sp
+    hinge = np.array(lid.p)
+    axis = rotation(lid).apply([0.0, 0.0, 1.0])
+    grip = np.array((lid * sapien.Pose(p=cfg["lid_grip_point"])).p)
+    swing = lambda angle: hinge + Rotation.from_rotvec(axis * angle).apply(grip - hinge)
+    arc = np.deg2rad(cfg["lid_open_degrees"]) * np.arange(1, cfg["lid_arc_steps"] + 1) / cfg["lid_arc_steps"]
     button = env.button.pose.sp.p
     above = np.array([button[0], button[1], env.button_height + cfg["press_tcp_height"]])
+    press = above - [0, 0, cfg["press_depth_travel"]]
 
-    # Joint-limit margin of the lid arc and of the press, each a continuous wrist motion of its own.
-    def wrist_margin(hand):
-        spins = [Rotation.from_rotvec(axis * np.deg2rad(cfg["lid_open_degrees"]) * k / 4) for k in range(5)]
-        lid_path = [make_pose(grip + [0, 0, 0.07], hand)] + [
-            make_pose(hinge + spin.apply(grip - hinge), spin * hand) for spin in spins]
-        press = [make_pose(above, hand), make_pose(above - [0, 0, cfg["press_depth_travel"]], hand)]
-        return min(path_margin(planner, lid_path), path_margin(planner, press))
+    # Fingers close along the hinge with the hand pointing at it, as in the real demos, unless the joints are tight.
+    def margin(hand):
+        poses = [grip + [0, 0, cfg["approach_height"]], grip, *map(swing, arc[::4]), swing(arc[-1]),
+                 above + [0, 0, cfg["press_lift"]], press]
+        return path_margin(planner, [make_pose(p, hand) for p in poses])
 
-    yaw = rotation(root).as_euler("xyz")[2]
-    hand = max((top_down(yaw), top_down(yaw + np.pi)), key=wrist_margin)
+    yaw = np.arctan2(axis[1], axis[0])
+    hands = sorted((top_down(yaw), top_down(yaw + np.pi)), key=lambda h: -h.apply([1.0, 0, 0]) @ (hinge - grip))
+    margins = [margin(h) for h in hands]
+    hand = hands[0] if margins[0] >= min(margins[1], cfg["wrist_margin_radians"]) else hands[1]
 
-    planner.set_gripper(CLOSED, steps=5)
+    planner.set_gripper(OPEN, steps=4)
     if fault != "lid_closed":
-        if cfg["lid_open"] == "drag":
-            start = local(0.0, front_y + 0.035, plate_z).p
-            planner.move_to(make_pose(start + [0, 0, 0.06], hand))
-            planner.move_to(make_pose(start, hand), pos_tol=0.004)
-            planner.speed = planner.contact_speed
-            end = local(0.0, lid["hinge_y"] - cfg["lid_push_past"], plate_z + cfg["lid_push_lift"]).p
-            opened = lambda: float(env.valve.get_qpos()[planner.idx, 1]) >= np.deg2rad(cfg["lid_open_degrees"])
-            planner.move_to(make_pose(end, hand), max_steps=140, pos_tol=0.006, until=opened)
-            planner.speed = planner.max_speed
-        else:
-            planner.set_gripper(OPEN, steps=4)
-            planner.move_to(make_pose(grip + [0, 0, 0.07], hand))
-            planner.speed = planner.contact_speed
-            planner.move_to(make_pose(grip, hand), pos_tol=0.002)
-            planner.set_gripper(cfg.get("lid_grip_width", 0.003), steps=6)
-            for step in range(1, cfg["lid_arc_steps"] + 1):
-                spin = Rotation.from_rotvec(axis * np.deg2rad(cfg["lid_open_degrees"]) * step / cfg["lid_arc_steps"])
-                planner.move_to(make_pose(hinge + spin.apply(grip - hinge), spin * hand), max_steps=60, pos_tol=0.005)
-                if env.valve.get_qpos()[planner.idx, 1] >= np.deg2rad(env.config["demo"]["lid_detent_trigger_degrees"]):
-                    # Latch between arc segments, once the wrist has settled at its current pose.
-                    engage = torch.zeros(env.num_envs, dtype=torch.bool, device=env.device)
-                    engage[planner.idx] = True
-                    env._engage_lid_detent(engage)
-                    break
-            planner.idle(10)
-            planner.set_gripper(OPEN, steps=4)
-            planner.target = planner.tcp()
-            planner.pos_bias[:] = 0.0
-            planner.rot_bias[:] = 0.0
-            planner.speed = planner.max_speed
-            planner.move_to(make_pose(planner.tcp().p + [0, 0, 0.05], rotation(planner.tcp())))
-            planner.set_gripper(CLOSED, steps=4)
-
+        planner.move_to(make_pose(grip + [0, 0, cfg["approach_height"]], hand))
+        planner.speed = planner.contact_speed
+        planner.move_to(make_pose(grip, hand), pos_tol=0.002)
+        planner.set_gripper(cfg["lid_grip_width"], steps=6)
+        latched = lambda: bool(env.lid_detent_engaged[planner.idx])
+        for angle in arc:
+            planner.move_to(make_pose(swing(angle), hand), max_steps=20, pos_tol=0.004, until=latched)
+            if latched() or planner.done:
+                break
+        planner.set_gripper(OPEN, steps=4)
+        planner.target = make_pose(planner.tcp().p, hand)
+        planner.speed = planner.max_speed
     if fault == "stopped_short":
         return planner.idle()
-    press_hands = (top_down(yaw), top_down(yaw + np.pi))
-    press_hand = max(press_hands, key=lambda h: path_margin(planner, [
-        make_pose(above + [0, 0, 0.05], h), make_pose(above - [0, 0, cfg["press_depth_travel"]], h)
-    ]))
-    # Retreat before changing wrist orientation to keep the IK path clear of the open lid.
-    planner.move_to(make_pose(above + [0, 0, 0.12], rotation(planner.tcp())))
-    planner.move_to(make_pose(above + [0, 0, 0.05], press_hand))
-    planner.move_to(make_pose(above, press_hand), pos_tol=0.004)
+    planner.move_to(make_pose(above + [0, 0, cfg["press_lift"]], hand))
+    planner.set_gripper(CLOSED, steps=4)
+    planner.move_to(make_pose(above, hand), pos_tol=0.004)
     planner.speed = planner.contact_speed
-    planner.move_to(make_pose(above - [0, 0, cfg["press_depth_travel"]], press_hand), max_steps=120, pos_tol=0.002)
+    planner.move_to(make_pose(press, hand), max_steps=120, pos_tol=0.002)
     planner.speed = planner.max_speed
     if fault is not None:
         return planner.idle()
@@ -1488,7 +1461,7 @@ def main():
         parser.error(f"--image-hz must divide the {control_hz} Hz control rate")
     recorder = Recorder(out_dir / RECORDING_NAME, env_id, args.obs_mode, args.sim_backend,
                         env.unwrapped.config["episode"]["max_episode_steps"], image_stride)
-    cameras = list(env.unwrapped.config["cameras"])
+    cameras = [name for name in env.unwrapped.config["cameras"] if name.endswith("_camera")]
     solver = SOLVERS[args.task]
 
     # Handle a completed simulation step.

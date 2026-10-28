@@ -95,17 +95,15 @@ demo:
   contact_speed: 0.05
   max_angular_speed: 0.6
   approach_height: 0.09
-  lid_open: grip
-  lid_grip_width: 0.003
-  press_steps: 40
+  lid_grip_point: [0.044, 0.0115, 0.0]
+  lid_grip_width: 0.022
+  wrist_margin_radians: 0.15
+  press_lift: 0.05
   press_tcp_height: 0.045
   press_depth_travel: 0.040
   hold_press_steps: 25
   lid_open_degrees: 92.0
-  lid_detent_trigger_degrees: 73.0
   lid_arc_steps: 12
-  lid_push_past: 0.045
-  lid_push_lift: 0.055
 distractors:
   clearance: 0.04
   cubes:

@@ -167,6 +167,8 @@ class ButtonCoverFR3Env(HiveboardFR3Env):
                 cfg["detent_stiffness"], cfg["detent_damping"], cfg["detent_force_limit"]
             )
         self.lid_drive.set_drive_target(targets)
+        if self.gpu_sim_enabled:
+            self.scene.px.gpu_apply_articulation_target_position()
         self.lid_detent_engaged |= engage
 
     # Add the module and task objects to the shared robot scene.
